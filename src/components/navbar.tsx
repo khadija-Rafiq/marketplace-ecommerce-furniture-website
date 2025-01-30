@@ -94,7 +94,7 @@
 import { Heart, Search, ShoppingCart, User, Menu } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
-import Image from 'next/image'
+//import Image from 'next/image'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 const Navbar = ({ bgColor = "bg-white" }) => {
