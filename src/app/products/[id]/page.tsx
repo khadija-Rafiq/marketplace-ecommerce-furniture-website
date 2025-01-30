@@ -1,11 +1,11 @@
 
+
 // 'use client'; // Required for React hooks in Next.js
 
-// import { useState, JSX } from "react";
+// import { useState, useEffect } from "react";
 // import { client } from "@/sanity/lib/client";
 // import { urlFor } from "@/sanity/lib/image";
 // import Image from "next/image";
-// import { addToCart } from "@/app/actions/action";
 
 
 // interface Product {
@@ -20,35 +20,35 @@
 //     name: string;
 //     image: any;
 //     _id: string;
-//     sizes:string[];
-    
-//   }
-  
+//     sizes: string[];
+// }
 
-// const page = async ({
-//   params,
-// }: {
+// interface PageProps {
 //   params: { id: string };
-// }): Promise<JSX.Element> => {
-//   const query = `*[ _type == "product" && _id == $id]{
-//     name,
-//     "id": _id,
-//     price,
-//     description,
-//     category,
-//     "image": image.asset._ref
-//   }[0]`;
+// }
 
-// // const handleAddToCart =(e: React.MouseEvent, product: Product) => {
-// //   e.preventDefault()
-// //   addToCart(product)
-// //   alert("ok")
-// //   console.log(handleAddToCart);
-  
-// // }
+// // Page component (no async here)
+// const Page = ({ params }: PageProps): JSX.Element => {
+//   const [product, setProduct] = useState<Product | null>(null);
+//   const [cart, setCart] = useState<Product[]>([]);
 
-
-//   const product: Product | null = await client.fetch(query, { id: params.id });
+//   // Fetch product data inside useEffect
+//   useEffect(() => {
+//     const fetchProduct = async () => {
+//       const query = `*[ _type == "product" && _id == $id]{
+//         name,
+//         "id": _id,
+//         price,
+//         description,
+//         category,
+//         "image": image.asset._ref
+//       }[0]`;
+      
+//       const fetchedProduct: Product | null = await client.fetch(query, { id: params.id });
+//       setProduct(fetchedProduct);
+//     };
+//     fetchProduct();
+//   }, [params.id]);
 
 //   if (!product) {
 //     return (
@@ -57,12 +57,6 @@
 //       </div>
 //     );
 //   }
-
-//   return <ProductPage product={product} />;
-// };
-
-// const ProductPage = ({ product }: { product: Product }) => {
-//   const [cart, setCart] = useState<Product[]>([]);
 
 //   const addToCart = (product: Product) => {
 //     setCart((prevCart) => [...prevCart, product]);
@@ -121,11 +115,11 @@
 //               </div>
 //             </div>
 
-//               {/* Add to Cart */}
-//              <div className="mt-8"> 
+//             {/* Add to Cart */}
+//             <div className="mt-8"> 
 //               <button
-//                 //onClick={(e) => handleAddToCart(e,product)}
-//                 className="w-full bg-gradient-to-r font-semibold text-white from-blue-600 to-purple-500 py-2 -x-4 rounded-lg shadow-lg hover:scale-110 transition-transform duration-300ease-in-out"
+//                 onClick={() => addToCart(product)}
+//                 className="w-full bg-gradient-to-r font-semibold text-white from-blue-600 to-purple-500 py-2 -x-4 rounded-lg shadow-lg hover:scale-110 transition-transform duration-300 ease-in-out"
 //               >
 //                 Add to Cart
 //               </button>
@@ -153,9 +147,7 @@
 //   );
 // };
 
-// export default page;
-
-
+// export default Page;
 
 
 
@@ -166,19 +158,25 @@ import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 
+interface Image {
+  asset: {
+    _ref: string;
+  };
+}
+
 interface Product {
-    category: string;
-    id: string;
-    price: number;
-    description: string;
-    stockLevel: number;
-    imagePath: string;
-    discountPercentage: number;
-    isFeaturedProduct: number;
-    name: string;
-    image: any;
-    _id: string;
-    sizes: string[];
+  category: string;
+  id: string;
+  price: number;
+  description: string;
+  stockLevel: number;
+  imagePath: string;
+  discountPercentage: number;
+  isFeaturedProduct: number;
+  name: string;
+  image: Image; // Updated from `any` to `Image`
+  _id: string;
+  sizes: string[];
 }
 
 interface PageProps {
