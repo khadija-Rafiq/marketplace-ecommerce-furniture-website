@@ -213,13 +213,36 @@ const Page = () => {
         {filteredProducts.map((product) => (
           <div key={product._id} className="bg-slate-50 rounded-lg p-4 w-[280px] h-[380px] flex flex-col items-center">
             <Link href={`/products/${product._id}`}>
-              <Image
+
+            
+            <Image
+  src={ 
+    typeof product.imagePath === 'string' 
+      ? product.imagePath 
+      : (product.imagePath?.asset?.url || '/default-image.png') 
+  }
+  width={250}
+  height={250}
+  alt={product.productName || 'Product Image'}
+  className="rounded-xl object-cover w-[250px] h-[250px]"
+/>
+
+
+
+
+
+
+
+
+
+
+               {/* <Image
                 src={product.imagePath || '/default-image.png'}
                 width={250}
                 height={250}
                 alt={product.productName || 'Product Image'}
                 className="rounded-xl object-cover w-[250px] h-[250px]"
-              />
+              />  */}
             </Link>
             <div className="text-lg font-semibold mt-2">{product.productName}</div>
             <div className="font-bold text-lg text-end">${product.price}</div>
