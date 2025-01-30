@@ -91,7 +91,7 @@
 
 
 'use client'
-import { CirclePlus, Heart, House, MessageCircleMore, Search, ShoppingCart, Store, User, Menu } from 'lucide-react'
+import { Heart, Search, ShoppingCart, User, Menu } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'

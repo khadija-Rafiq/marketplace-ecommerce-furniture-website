@@ -1,6 +1,6 @@
 
 
-export default {
+export default{
     name: 'product',
     type: 'document',
     title: 'Product',

@@ -147,9 +147,9 @@ import Link from 'next/link';
 import Swal from 'sweetalert2';
 import { Product } from '@/types/products';
 import { addToCart } from '../actions/action';
-import ProductListing from '@/components/ProductListing';
+//import ProductListing from '@/components/ProductListing';
 import SearchAndFilter from '@/components/SearchAndFilter';
-import CartPage from '../cart/page';
+//import CartPage from '../cart/page';
 
 // Fetch products from Sanity
 const fetchProducts = async (): Promise<Product[]> => {

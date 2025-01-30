@@ -11,11 +11,11 @@ import { useRouter } from "next/navigation"; // ✅ Correct Import for App Route
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<Product[]>([]);
-  const [isClient, setIsClient] = useState(false);
+  //const [isClient, setIsClient] = useState(false);
   const router = useRouter(); // ✅ Now using next/navigation
 
   useEffect(() => {
-    setIsClient(true);
+    //setIsClient(true);
     setCartItems(getCartItems());
   }, []);
 
