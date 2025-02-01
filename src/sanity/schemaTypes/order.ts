@@ -1,5 +1,3 @@
-//import { Layout } from "lucide-react";
-import productSchema from "./product";
 
 export default {
     name :"order",
