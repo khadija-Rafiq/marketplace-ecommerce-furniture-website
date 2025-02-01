@@ -3,14 +3,10 @@ export interface Product {
     _id :string;
     productName: string;
     _type :"product";
-    imagePath? :{
-        asset :{
-            _ref :string;
-            _type : "image";
-        }
-    };
+    imagePath? : string;
     price :number;
     description? : string;
+    image?: string;
     slug :{
         _type: "slug"
         current : string;

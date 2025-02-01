@@ -1,16 +1,17 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-//import { getCartItems } from "@/app/actions/actions";
 import Link from "next/link";
 import { Product } from "@/types/products";
 import { urlFor } from "@/sanity/lib/image";
 import { CgChevronRight } from "react-icons/cg";
 import { getCartItems } from "../actions/action";
+import Swal from "sweetalert2";
+import { client } from "@/sanity/lib/client";
 
-
-export default function CheckoutPage() {
+export default  function CheckoutPage() {
   const [cartItems, setCartItems] = useState<Product[]>([]);
   const [discount, setDiscount] = useState<number>(0);
   const [formValues, setFormValues] = useState({
@@ -68,14 +69,52 @@ export default function CheckoutPage() {
     return Object.values(errors).every((error) => !error);
   };
 
-  const handlePlaceOrder = () => {
-    if (validateForm()) {
-      localStorage.removeItem("appliedDiscount");
-    //   toast.success("Order placed successfully!");
-    } else {
-    //   toast.error("Please fill in all the fields.");
-    }
+  const handlePlaceOrder = async () => {
+    Swal.fire({
+      title: "Processing your order...",
+      text: "Please wait a moment.",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Proceed",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (validateForm()) {
+          localStorage.removeItem("appliedDiscount");
+          Swal.fire("Success!", "Your order has been successfully processed!", "success");
+        } else {
+          Swal.fire("Error!", "Please fill in all the fields before proceeding", "error");
+        }
+      }
+    });
+  
+
+  const orderData = {
+    _type: "order",
+    firstName: formValues.firstName,
+    lastName: formValues.lastName,
+    address: formValues.address,
+    city: formValues.city,
+    zipCode: formValues.zipCode,
+    phone: formValues.phone,
+    email: formValues.email,
+    cartItems: cartItems.map((item) => ({
+      _type: "reference",
+      _ref: item._id,
+    })),
+    total: total,
+    discount: discount,
+    orderDate: new Date().toISOString(),
   };
+
+  try {
+    await client.create(orderData);
+    localStorage.removeItem("appliedDiscount");
+  } catch (error) {
+    console.log("Error creating order", error);
+  }
+}
 
   return (
     <div className={`min-h-screen bg-gray-50`}>
@@ -121,7 +160,7 @@ export default function CheckoutPage() {
                   <div className="flex-1">
                     <h3 className="text-sm font-medium">{item.productName}</h3>
                     <p className="text-xs text-gray-500">
-                      Quantity: {item.stockLevel}
+                      Quantity: {item.stockLevel} {/* Corrected quantity */}
                     </p>
                   </div>
                   <p className="text-sm font-medium">
@@ -159,9 +198,7 @@ export default function CheckoutPage() {
                   className="border"
                 />
                 {formErrors.firstName && (
-                  <p className="text-sm text-red-500">
-                    First name is required.
-                  </p>
+                  <p className="text-sm text-red-500">First name is required.</p>
                 )}
               </div>
               <div>
@@ -171,12 +208,9 @@ export default function CheckoutPage() {
                   placeholder="Enter your last name"
                   value={formValues.lastName}
                   onChange={handleInputChange}
-                  className="border"
                 />
                 {formErrors.lastName && (
-                  <p className="text-sm text-red-500">
-                    Last name is required.
-                  </p>
+                  <p className="text-sm text-red-500">Last name is required.</p>
                 )}
               </div>
             </div>
@@ -187,7 +221,6 @@ export default function CheckoutPage() {
                 placeholder="Enter your address"
                 value={formValues.address}
                 onChange={handleInputChange}
-                className="border"
               />
               {formErrors.address && (
                 <p className="text-sm text-red-500">Address is required.</p>
@@ -200,7 +233,6 @@ export default function CheckoutPage() {
                 placeholder="Enter your city"
                 value={formValues.city}
                 onChange={handleInputChange}
-                className="border"
               />
               {formErrors.city && (
                 <p className="text-sm text-red-500">City is required.</p>
@@ -213,7 +245,6 @@ export default function CheckoutPage() {
                 placeholder="Enter your zip code"
                 value={formValues.zipCode}
                 onChange={handleInputChange}
-                className="border"
               />
               {formErrors.zipCode && (
                 <p className="text-sm text-red-500">Zip Code is required.</p>
@@ -226,7 +257,6 @@ export default function CheckoutPage() {
                 placeholder="Enter your phone number"
                 value={formValues.phone}
                 onChange={handleInputChange}
-                className="border"
               />
               {formErrors.phone && (
                 <p className="text-sm text-red-500">Phone is required.</p>
@@ -239,14 +269,13 @@ export default function CheckoutPage() {
                 placeholder="Enter your email address"
                 value={formValues.email}
                 onChange={handleInputChange}
-                className="border"
               />
               {formErrors.email && (
                 <p className="text-sm text-red-500">Email is required.</p>
               )}
             </div>
             <button
-              className="w-full bg-gradient-to-r font-semibold text-white from-blue-600 to-purple-500 py-2 -x-4 rounded-lg shadow-lg hover:scale-110 transition-transform duration-300 ease-in-out"
+              className="px-2 w-full bg-gradient-to-r text-white from-blue-600 to-purple-500 py-2 rounded-lg shadow-lg transition-transform duration-300"
               onClick={handlePlaceOrder}
             >
               Place Order

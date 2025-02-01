@@ -1,6 +1,6 @@
 
 
-const productSchema ={
+const product ={
     name: 'product',
     type: 'document',
     title: 'Product',
@@ -50,7 +50,7 @@ const productSchema ={
       },
     ],
   };
-  export default productSchema;
+  export default product;
 
   
   
