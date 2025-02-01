@@ -1,5 +1,7 @@
   
 export interface Product {
+    name: any;
+    category: any;
     _id :string;
     productName: string;
     _type :"product";
