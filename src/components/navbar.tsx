@@ -112,7 +112,7 @@ const Navbar = ({ bgColor = "bg-white" }) => {
                 <Link className='text-black text-lg font-light' href={"/shop"}>Shop</Link>
                 <Link className='text-black text-lg font-light' href={"/blog"}>Blog</Link>
                 <Link className='text-black text-lg font-light' href={"/contact"}>Contact</Link>
-                <Link className='text-black text-lg font-light' href={"/viewCart"}><ShoppingCart /> Cart</Link>
+                <Link className='text-black text-lg font-light' href={"/cart"}><ShoppingCart /> Cart</Link>
                 
               </div>
             </SheetHeader>
@@ -134,7 +134,7 @@ const Navbar = ({ bgColor = "bg-white" }) => {
           <Link href={"/myAccount"}><User /></Link>
           <Link href={"#"}><Search /></Link>
           <Link href={"#"}><Heart /></Link>
-          <Link href={"/viewCart"}><ShoppingCart /></Link>
+          <Link href={"/cart"}><ShoppingCart /></Link>
         </div>
       </div>
     </nav>
